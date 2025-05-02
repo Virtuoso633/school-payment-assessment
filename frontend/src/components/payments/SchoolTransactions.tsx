@@ -3,9 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Box, Paper, Typography, Alert, 
   Select, MenuItem, FormControl, InputLabel, Button,
-  SelectChangeEvent, Fade
+  SelectChangeEvent, Fade, TextField, CircularProgress, Autocomplete
 } from '@mui/material';
 import TransactionList from './TransactionList';
+import api from '../../services/api';
 
 const SchoolTransactions: React.FC = () => {
   const { schoolId } = useParams<{ schoolId: string }>();
@@ -15,18 +16,21 @@ const SchoolTransactions: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showList, setShowList] = useState(true);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     setLoading(true);
-    fetch('/schools')
-      .then(res => res.json())
-      .then(data => {
-        setSchools(data.map((school: any) => ({
+    // Use your api service instead of fetch for consistency
+    api.get('/schools')
+      .then((response: { data: any[] }) => {
+        const schoolData = response.data.map((school: any) => ({
           id: school.id || school._id || school.school_id
-        })));
+        }));
+        setSchools(schoolData);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err: Error) => {
+        console.error('Error loading schools:', err);
         setError('Failed to load schools');
         setLoading(false);
       });
@@ -39,11 +43,14 @@ const SchoolTransactions: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [selectedSchool]);
 
-  const handleSchoolChange = (event: SelectChangeEvent) => {
-    const newSchoolId = event.target.value as string;
+  const handleSchoolChange = (event: React.SyntheticEvent, newValue: string | null) => {
+    const newSchoolId = newValue || '';
     setSelectedSchool(newSchoolId);
+    
     if (newSchoolId) {
       navigate(`/dashboard/school-transactions/${newSchoolId}`);
+    } else {
+      navigate(`/dashboard/school-transactions`);
     }
   };
 
@@ -63,24 +70,39 @@ const SchoolTransactions: React.FC = () => {
       </Box>
 
       <Box mb={3}>
-        <FormControl fullWidth>
-          <InputLabel id="school-select-label">Select School</InputLabel>
-          <Select
-            labelId="school-select-label"
-            value={selectedSchool}
-            onChange={handleSchoolChange}
-            label="Select School"
-          >
-            <MenuItem value="">
-              <em>Select a school</em>
-            </MenuItem>
-            {schools.map((school) => (
-              <MenuItem key={school.id} value={school.id}>
-                {school.id}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Autocomplete
+          value={selectedSchool}
+          onChange={handleSchoolChange}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+          options={schools.map(school => school.id)}
+          renderInput={(params) => (
+            <TextField 
+              {...params} 
+              label="Select School" 
+              fullWidth
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {loading && <CircularProgress color="inherit" size={20} />}
+                    {params.InputProps.endAdornment}
+                  </>
+                )
+              }}
+            />
+          )}
+          loading={loading}
+          freeSolo
+          filterOptions={(options, params) => {
+            const filtered = options.filter(option => 
+              option.toLowerCase().includes(params.inputValue.toLowerCase())
+            );
+            return filtered;
+          }}
+        />
         {error && <Alert severity="error">{error}</Alert>}
       </Box>
 

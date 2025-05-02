@@ -4,15 +4,24 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { 
   AppBar, Box, Toolbar, Typography, Button, Container, 
   Drawer, List, ListItemIcon, ListItemText, Divider, 
-  ListItemButton
+  ListItemButton, IconButton
 } from '@mui/material';
-import { Dashboard as DashboardIcon, PaymentRounded, ListAlt, Logout } from '@mui/icons-material';
+import { 
+  Dashboard as DashboardIcon, 
+  PaymentRounded, 
+  ListAlt, 
+  Logout,
+  Brightness4 as Brightness4Icon,
+  Brightness7 as Brightness7Icon
+} from '@mui/icons-material';
 import { AuthContext } from '../../context/AuthContext';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const drawerWidth = 240;
 
 const DashboardLayout: React.FC = () => {
   const { user, logout } = useContext(AuthContext);
+  const { mode, toggleMode } = useContext(ThemeContext);
   const navigate = useNavigate();
   
   const handleLogout = () => {
@@ -28,16 +37,29 @@ const DashboardLayout: React.FC = () => {
             School Payment System
           </Typography>
           
-          {user && (
-            <Box display="flex" alignItems="center">
-              <Typography variant="body1" sx={{ mr: 2 }}>
-                Welcome, {user.username}
-              </Typography>
-              <Button color="inherit" onClick={handleLogout}>
-                Logout
-              </Button>
-            </Box>
-          )}
+          <Box display="flex" alignItems="center">
+            {/* Dark mode toggle */}
+            <IconButton 
+              color="inherit"
+              onClick={toggleMode}
+              aria-label="toggle dark mode"
+              sx={{ mr: 2 }}
+            >
+              {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+            
+            {/* User and logout */}
+            {user && (
+              <>
+                <Typography variant="body1" sx={{ mr: 2 }}>
+                  Welcome, {user.username}
+                </Typography>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
       

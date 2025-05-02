@@ -1,17 +1,23 @@
-import React, { useMemo, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useMemo, useContext } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { router } from './router';
 import { AuthProvider } from './context/AuthContext';
-import { Box, IconButton } from '@mui/material';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { Box } from '@mui/material';
+import { ThemeProvider, ThemeContext } from './context/ThemeContext';
 
 function App() {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
 
+function AppContent() {
+  const { mode } = useContext(ThemeContext);
+  
   const theme = useMemo(
     () =>
       createTheme({
@@ -95,43 +101,14 @@ function App() {
     [mode]
   );
 
-  // Create the toggle button as a separate component
-  const DarkModeToggle = (
-    <Box
-      sx={{
-        position: 'fixed',
-        top: 16,
-        right: 16,
-        zIndex: 9999,
-        backgroundColor: mode === 'light' ? 'rgba(255,255,255,0.8)' : 'rgba(33,33,33,0.8)',
-        borderRadius: '50%',
-        padding: '4px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-      }}
-    >
-      <IconButton
-        onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
-        color="inherit"
-        aria-label="toggle dark mode"
-        size="large"
-      >
-        {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-      </IconButton>
-    </Box>
-  );
-
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-      </ThemeProvider>
-      {ReactDOM.createPortal(DarkModeToggle, document.body)}
-    </>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </MuiThemeProvider>
   );
-
 }
 
 export default App;

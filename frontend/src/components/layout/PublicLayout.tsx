@@ -1,17 +1,33 @@
 // frontend/src/components/layout/PublicLayout.tsx
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, Container, Paper, AppBar, Toolbar, Typography } from '@mui/material';
+import { Box, Container, Paper, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const PublicLayout: React.FC = () => {
+  const { mode, toggleMode } = useContext(ThemeContext);
+  
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AppBar position="static" sx={{ py: 1 }}>
-        <Toolbar>
+      <AppBar position="fixed" sx={{ py: 1 }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h5">School Payment System</Typography>
+          
+          {/* Dark mode toggle inside AppBar */}
+          <IconButton 
+            onClick={toggleMode}
+            color="inherit" 
+            aria-label="toggle dark mode"
+          >
+            {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
+      
+      <Toolbar /> {/* This adds spacing below the fixed AppBar */}
       
       <Container component="main" sx={{ mt: 6, mb: 6, flexGrow: 1, display: 'flex', alignItems: 'center' }}>
         <Paper 
