@@ -5,7 +5,7 @@ This project is the frontend for the School Payment Assessment system, built wit
 ## Live Demo
 
 [Frontend on Vercel](https://your-vercel-app-url.vercel.app)  
-[Backend API](http://35.154.69.40:3000)
+[Backend API](https://35.154.69.40)
 
 ---
 
@@ -36,7 +36,7 @@ This project is the frontend for the School Payment Assessment system, built wit
    Create a `.env` file in the `frontend` directory:
 
    ```
-   REACT_APP_API_BASE_URL=http://35.154.69.40:3000
+   API_URL=https://35.154.69.40
    ```
 
 4. **Run the development server:**
@@ -109,7 +109,7 @@ This project is the frontend for the School Payment Assessment system, built wit
 ## API Integration
 
 - All API requests are made to the backend at:  
-  `http://35.154.69.40:3000`
+  `https://35.154.69.40`
 - See the [backend README](../backend/README.md) for full API documentation.
 
 ---

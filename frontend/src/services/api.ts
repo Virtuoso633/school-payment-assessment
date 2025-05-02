@@ -1,7 +1,7 @@
 // src/services/api.ts
 import axios from 'axios';
 
-const API_URL = 'http://35.154.69.40:3000'; // Change to your backend URL
+const API_URL = 'https://35.154.69.40'; // Change to your backend URL
 
 const api = axios.create({
   baseURL: API_URL,

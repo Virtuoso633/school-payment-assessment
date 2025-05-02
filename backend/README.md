@@ -234,7 +234,7 @@ npm run test:e2e
 
 The backend is publicly hosted at:
 
-**https://35.154.69.40:3000**
+**https://35.154.69.40**
 
 You can use this URL for all API requests from your frontend or Postman.
 
