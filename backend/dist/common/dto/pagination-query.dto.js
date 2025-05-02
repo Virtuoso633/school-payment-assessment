@@ -15,6 +15,7 @@ const class_validator_1 = require("class-validator");
 class PaginationQueryDto {
     limit = 10;
     page = 1;
+    status;
     sort = 'createdAt';
     order = 'desc';
 }
@@ -34,6 +35,11 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], PaginationQueryDto.prototype, "page", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], PaginationQueryDto.prototype, "status", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),

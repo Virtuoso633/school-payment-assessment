@@ -38,6 +38,10 @@ let OrdersController = OrdersController_1 = class OrdersController {
         this.logger.log(`Fetching all transactions with query: ${JSON.stringify(paginationQuery)}`);
         return this.ordersService.findAllTransactions(paginationQuery);
     }
+    async findAllTransactions(query) {
+        this.logger.log(`Fetching all transactions with query: ${JSON.stringify(query)}`);
+        return this.ordersService.findAllTransactions(query);
+    }
     async getTransactionsBySchool(schoolId, paginationQuery) {
         this.logger.log(`Fetching transactions for school ${schoolId} with query: ${JSON.stringify(paginationQuery)}`);
         return this.ordersService.findTransactionsBySchool(schoolId, paginationQuery);
@@ -73,6 +77,13 @@ __decorate([
     __metadata("design:paramtypes", [pagination_query_dto_1.PaginationQueryDto]),
     __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "getAllTransactions", null);
+__decorate([
+    (0, common_1.Get)('transactions'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [pagination_query_dto_1.PaginationQueryDto]),
+    __metadata("design:returntype", Promise)
+], OrdersController.prototype, "findAllTransactions", null);
 __decorate([
     (0, common_1.Get)('transactions/school/:schoolId'),
     __param(0, (0, common_1.Param)('schoolId')),

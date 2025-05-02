@@ -13,6 +13,10 @@ export declare class OrdersController {
         data: any[];
         total: number;
     }>;
+    findAllTransactions(query: PaginationQueryDto): Promise<{
+        data: any[];
+        total: number;
+    }>;
     getTransactionsBySchool(schoolId: string, paginationQuery: PaginationQueryDto): Promise<{
         data: any[];
         total: number;

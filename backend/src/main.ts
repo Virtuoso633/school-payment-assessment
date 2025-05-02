@@ -48,7 +48,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://35.154.69.40:3000'], // Use your frontend URL here
+    origin: ['https://school-payment-assessment-sanket-devmundes-projects.vercel.app',
+    'https://school-payment-assessment.vercel.app',
+    'https://school-payment-assessment-git-main-sanket-devmundes-projects.vercel.app',
+    'http://localhost:3000'], // Use your frontend URL here
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
