@@ -229,6 +229,15 @@ Run end-to-end tests:
 npm run test:e2e
 ```
 
+
+## Live API
+
+The backend is publicly hosted at:
+
+**https://35.154.69.40:3000**
+
+You can use this URL for all API requests from your frontend or Postman.
+
 ## Error Handling
 
 The API implements consistent error handling with appropriate HTTP status codes:
