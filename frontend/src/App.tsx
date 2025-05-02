@@ -103,13 +103,18 @@ function App() {
           top: 16,
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 1500,
+          zIndex: 9999, // Increase z-index to ensure it's always on top
+          backgroundColor: mode === 'light' ? 'rgba(255,255,255,0.8)' : 'rgba(33,33,33,0.8)', // Semi-transparent background
+          borderRadius: '50%', // Make it circular
+          padding: '4px', // Add padding
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)', // Add shadow for better visibility
         }}
       >
         <IconButton
           onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
           color="inherit"
           aria-label="toggle dark mode"
+          size="large" // Make it slightly larger
         >
           {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
@@ -119,6 +124,7 @@ function App() {
       </AuthProvider>
     </ThemeProvider>
   );
+
 }
 
 export default App;
