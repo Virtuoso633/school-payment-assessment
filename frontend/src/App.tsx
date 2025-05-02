@@ -94,34 +94,37 @@ function App() {
     [mode]
   );
 
+  // Create the toggle button as a separate component
+  const DarkModeToggle = (
+    <Box
+      sx={{
+        position: 'fixed',
+        top: 16,
+        right: 16, // Position it on the right instead of center
+        transform: 'none', // Remove the transform which can cause issues
+        zIndex: 1500,
+      }}
+    >
+      <IconButton
+        onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+        color="inherit"
+        aria-label="toggle dark mode"
+        size="medium"
+      >
+        {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
+    </Box>
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 16,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 9999, // Increase z-index to ensure it's always on top
-          backgroundColor: mode === 'light' ? 'rgba(255,255,255,0.8)' : 'rgba(33,33,33,0.8)', // Semi-transparent background
-          borderRadius: '50%', // Make it circular
-          padding: '4px', // Add padding
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)', // Add shadow for better visibility
-        }}
-      >
-        <IconButton
-          onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
-          color="inherit"
-          aria-label="toggle dark mode"
-          size="large" // Make it slightly larger
-        >
-          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+      {DarkModeToggle} {/* Render the toggle outside the router */}
+      <Box sx={{ position: 'relative', minHeight: '100vh' }}> {/* Wrapper for the app content */}
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </Box>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
     </ThemeProvider>
   );
 
