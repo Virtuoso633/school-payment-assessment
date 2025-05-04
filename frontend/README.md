@@ -93,7 +93,8 @@ This project is the frontend for the School Payment Assessment system, built wit
 > _Add screenshots of each main page here for clarity._
 
 - **Login Page:**  
-  ![Login Screenshot](screenshots/login.png)
+  <img width="1440" alt="Screenshot 2025-05-04 at 10 49 58 AM" src="https://github.com/user-attachments/assets/3ea8d9c3-df51-426f-969a-596e8a3330ce" />
+
 
 - **Dashboard:**  
   ![Dashboard Screenshot](screenshots/dashboard.png)
