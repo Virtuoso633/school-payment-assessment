@@ -4,7 +4,7 @@ This project is the frontend for the School Payment Assessment system, built wit
 
 ## Live Demo
 
-[Frontend on Vercel](https://your-vercel-app-url.vercel.app)  
+[Frontend on Vercel](https://school-payment-assessment.vercel.app/)  
 [Backend API](https://35.154.69.40)
 
 ---
@@ -97,13 +97,16 @@ This project is the frontend for the School Payment Assessment system, built wit
 
 
 - **Dashboard:**  
-  ![Dashboard Screenshot](screenshots/dashboard.png)
+  <img width="1437" alt="Screenshot 2025-05-04 at 10 48 46 AM" src="https://github.com/user-attachments/assets/bea077e5-a03c-4afb-b0c0-1e82c4648284" />
+
 
 - **Create Payment:**  
-  ![Create Payment Screenshot](screenshots/create-payment.png)
+  <img width="1440" alt="Screenshot 2025-05-04 at 10 48 55 AM" src="https://github.com/user-attachments/assets/39d6cfd9-d429-4ae4-adcd-2eb32a34e8c3" />
+
 
 - **Transactions List:**  
-  ![Transactions Screenshot](screenshots/transactions.png)
+  <img width="1440" alt="Screenshot 2025-05-04 at 10 49 24 AM" src="https://github.com/user-attachments/assets/587841d1-5635-4545-93d7-459fd6be8a9b" />
+
 
 ---
 
@@ -118,7 +121,7 @@ This project is the frontend for the School Payment Assessment system, built wit
 ## Deployment
 
 This app is deployed on Vercel:  
-[https://your-vercel-app-url.vercel.app](https://your-vercel-app-url.vercel.app)
+[https://school-payment-assessment.vercel.app](https://school-payment-assessment.vercel.app/)
 
 ---
 
