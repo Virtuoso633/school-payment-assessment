@@ -8,12 +8,24 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Important for CORS with credentials
 });
 
-// Add request interceptor to attach JWT token
+// Add request interceptor to attach JWT token with Safari compatibility
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    // Try localStorage first (works in most browsers)
+    let token = localStorage.getItem('token');
+    
+    // If localStorage fails (like in Safari private mode), try cookies
+    if (!token) {
+      const cookies = document.cookie.split(';');
+      const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+      if (tokenCookie) {
+        token = tokenCookie.split('=')[1];
+      }
+    }
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,14 +34,25 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Add response interceptor to handle token expiration
+// Add response interceptor for token expiration
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Clear token from both localStorage and cookies
       localStorage.removeItem('token');
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure';
       window.location.href = '/login';
     }
+    
+    // Log detailed error information for debugging
+    console.error('[API Error]', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      browser: navigator.userAgent
+    });
+    
     return Promise.reject(error);
   }
 );

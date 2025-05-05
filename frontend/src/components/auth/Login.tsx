@@ -32,7 +32,10 @@ const Login: React.FC = () => {
       await login(values.username, values.password);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error details:', err);
+      // More detailed error message with debugging info
+      const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';
+      setError(`${errorMessage} (Status: ${err.response?.status || 'unknown'})`);
     }
   };
   

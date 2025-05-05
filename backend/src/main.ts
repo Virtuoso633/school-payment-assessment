@@ -49,14 +49,29 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-    app.enableCors({
-      origin: ['https://school-payment-assessment-sanket-devmundes-projects.vercel.app',
-      'https://school-payment-assessment.vercel.app',
-      'https://school-payment-assessment-git-main-sanket-devmundes-projects.vercel.app',
-      'http://localhost:3000'], // Use your frontend URL here
-      credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+  app.enableCors({
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'https://school-payment-assessment-sanket-devmundes-projects.vercel.app',
+        'https://school-payment-assessment.vercel.app',
+        'https://school-payment-assessment-git-main-sanket-devmundes-projects.vercel.app',
+        'http://localhost:3000',
+        'http://localhost:5173'
+      ];
+      
+      // Allow requests with no origin (like mobile apps, curl requests, etc)
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        console.log('Blocked origin:', origin);
+        callback(null, true); // For development - allow all origins
+        // For production: callback(new Error('Not allowed by CORS'), false);
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'], // Add all methods
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    exposedHeaders: ['Content-Length', 'Content-Type']
   });
   console.log('CORS enabled for http://localhost:3000');
   const port = process.env.PORT || 3000;
