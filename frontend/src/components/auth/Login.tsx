@@ -29,13 +29,41 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: LoginFormValues) => {
     try {
       setError(null);
+      console.log('Attempting login with:', values.username);
+      
+      // Add a direct API test to debug
+      try {
+        const response = await fetch('https://35.154.69.40/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: values.username, password: values.password }),
+          mode: 'cors',
+          credentials: 'include'
+        });
+        
+        // Fix the Headers iteration issue
+        const headerObj: Record<string, string> = {};
+        response.headers.forEach((value, key) => {
+          headerObj[key] = value;
+        });
+        
+        console.log('Raw fetch response:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: headerObj
+        });
+      } catch (fetchError) {
+        console.error('Direct fetch error:', fetchError);
+      }
+      
+      // Regular login
       await login(values.username, values.password);
       navigate('/dashboard');
     } catch (err: any) {
       console.error('Login error details:', err);
       // More detailed error message with debugging info
       const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';
-      setError(`${errorMessage} (Status: ${err.response?.status || 'unknown'})`);
+      setError(`${errorMessage} (Status: ${err.response?.status || 'unknown'}, Type: ${err.name}, Message: ${err.message})`);
     }
   };
   
@@ -62,7 +90,7 @@ const Login: React.FC = () => {
                 label="Username"
                 error={touched.username && !!errors.username}
                 helperText={<ErrorMessage name="username" />}
-                size="medium"  // Change from "large" to "medium"
+                size="medium"
                 InputProps={{ style: { fontSize: '1.2rem' } }}
                 InputLabelProps={{ style: { fontSize: '1.2rem' } }}
                 sx={{ mb: 3 }}
@@ -77,10 +105,10 @@ const Login: React.FC = () => {
                 label="Password"
                 type="password"
                 error={touched.password && !!errors.password}
-                size="medium"  // Use medium instead of large
-                InputProps={{ style: { fontSize: '1.2rem' } }}  // Add this
-                InputLabelProps={{ style: { fontSize: '1.2rem' } }}  // Add this
-                sx={{ mb: 3 }}  // Fixed typo in sx prop
+                size="medium"
+                InputProps={{ style: { fontSize: '1.2rem' } }}
+                InputLabelProps={{ style: { fontSize: '1.2rem' } }}
+                sx={{ mb: 3 }}
               />
             </Box>
             

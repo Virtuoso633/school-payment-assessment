@@ -36,28 +36,32 @@ const getToken = (): string | null => {
 export const authService = {
   login: async (credentials: LoginRequest): Promise<AuthResponse> => {
     try {
-      const response = await api.post<AuthResponse>('/auth/login', credentials);
+      console.log('Making login request to:', `${api.defaults.baseURL}/auth/login`);
       
-      // Use the updated setToken function
-      const token = response.data.access_token;
+      const response = await api.post<AuthResponse>('/auth/login', credentials);
+      console.log('Login response received:', response.status);
+      
+      // Store token in both localStorage and cookies for cross-browser compatibility
       try {
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', response.data.access_token);
         
-        // Set cookie with appropriate SameSite attribute
-        const isLocalhost = window.location.hostname === 'localhost';
-        const cookieOptions = isLocalhost
-          ? `token=${token}; path=/; max-age=86400`
-          : `token=${token}; path=/; max-age=86400; SameSite=None; Secure`;
+        // More compatible cookie setting
+        document.cookie = `token=${response.data.access_token}; path=/; max-age=86400`;
         
-        document.cookie = cookieOptions;
-        
+        console.log('Token stored successfully');
       } catch (error) {
         console.error('Error saving token', error);
       }
       
       return response.data;
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (error: any) {
+      console.error('Login API error:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+        url: error.config?.url,
+        headers: error.config?.headers
+      });
       throw error;
     }
   },
